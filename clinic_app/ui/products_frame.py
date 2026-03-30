@@ -14,15 +14,35 @@ class ProductsFrame(ctk.CTkFrame):
         self.clinic_service = clinic_service
         self.selected_product_id: int | None = None
 
+        self.palette = {
+            "surface": "#f8f9fa",
+            "surface_low": "#f3f4f5",
+            "card": "#ffffff",
+            "text": "#191c1d",
+            "muted": "#414751",
+            "primary": "#005da7",
+            "primary_hover": "#004883",
+            "secondary": "#e7e8e9",
+            "secondary_hover": "#d9dadb",
+            "danger": "#ba1a1a",
+            "danger_hover": "#93000a",
+        }
+        self.configure(fg_color=self.palette["surface"])
+
         self.grid_columnconfigure(0, weight=3)
         self.grid_columnconfigure(1, weight=2)
         self.grid_rowconfigure(1, weight=1)
 
-        ctk.CTkLabel(self, text="Products", font=ctk.CTkFont(size=24, weight="bold")).grid(
+        ctk.CTkLabel(
+            self,
+            text="Inventory Management",
+            text_color=self.palette["text"],
+            font=ctk.CTkFont(size=30, weight="bold"),
+        ).grid(
             row=0, column=0, padx=20, pady=(16, 8), sticky="w"
         )
 
-        table_wrap = ctk.CTkFrame(self)
+        table_wrap = ctk.CTkFrame(self, fg_color=self.palette["card"], corner_radius=12, border_width=1, border_color="#dfe3eb")
         table_wrap.grid(row=1, column=0, padx=(20, 10), pady=(0, 18), sticky="nsew")
         table_wrap.grid_columnconfigure(0, weight=1)
         table_wrap.grid_rowconfigure(0, weight=1)
@@ -44,7 +64,7 @@ class ProductsFrame(ctk.CTkFrame):
         yscroll.grid(row=0, column=1, sticky="ns")
         self.tree.bind("<<TreeviewSelect>>", self._on_select)
 
-        form = ctk.CTkFrame(self)
+        form = ctk.CTkFrame(self, fg_color=self.palette["card"], corner_radius=12, border_width=1, border_color="#dfe3eb")
         form.grid(row=1, column=1, padx=(10, 20), pady=(0, 18), sticky="nsew")
         form.grid_columnconfigure(1, weight=1)
 
@@ -65,20 +85,50 @@ class ProductsFrame(ctk.CTkFrame):
         for i in range(3):
             buttons.grid_columnconfigure(i, weight=1)
 
-        ctk.CTkButton(buttons, text="Add", command=self.add_product).grid(row=0, column=0, padx=4, sticky="ew")
-        ctk.CTkButton(buttons, text="Update", command=self.update_product).grid(row=0, column=1, padx=4, sticky="ew")
-        ctk.CTkButton(buttons, text="Delete", fg_color="#b91c1c", hover_color="#991b1b", command=self.delete_product).grid(
+        ctk.CTkButton(
+            buttons,
+            text="Add",
+            fg_color=self.palette["primary"],
+            hover_color=self.palette["primary_hover"],
+            command=self.add_product,
+        ).grid(row=0, column=0, padx=4, sticky="ew")
+        ctk.CTkButton(
+            buttons,
+            text="Update",
+            fg_color=self.palette["primary"],
+            hover_color=self.palette["primary_hover"],
+            command=self.update_product,
+        ).grid(row=0, column=1, padx=4, sticky="ew")
+        ctk.CTkButton(
+            buttons,
+            text="Delete",
+            fg_color=self.palette["danger"],
+            hover_color=self.palette["danger_hover"],
+            command=self.delete_product,
+        ).grid(
             row=0, column=2, padx=4, sticky="ew"
         )
-        ctk.CTkButton(form, text="Clear Form", fg_color="gray", command=self.clear_form).grid(
+        ctk.CTkButton(
+            form,
+            text="Clear Form",
+            fg_color=self.palette["secondary"],
+            hover_color=self.palette["secondary_hover"],
+            text_color=self.palette["text"],
+            command=self.clear_form,
+        ).grid(
             row=6, column=0, columnspan=2, sticky="ew", padx=8
         )
 
         self.refresh_table()
 
     def _row(self, frame: ctk.CTkFrame, row: int, label: str, var: ctk.StringVar) -> None:
-        ctk.CTkLabel(frame, text=label).grid(row=row, column=0, padx=8, pady=6, sticky="w")
-        ctk.CTkEntry(frame, textvariable=var).grid(row=row, column=1, padx=8, pady=6, sticky="ew")
+        ctk.CTkLabel(frame, text=label, text_color=self.palette["muted"]).grid(row=row, column=0, padx=8, pady=6, sticky="w")
+        ctk.CTkEntry(
+            frame,
+            textvariable=var,
+            fg_color=self.palette["surface_low"],
+            border_width=0,
+        ).grid(row=row, column=1, padx=8, pady=6, sticky="ew")
 
     def refresh_table(self) -> None:
         for item in self.tree.get_children():
@@ -126,7 +176,12 @@ class ProductsFrame(ctk.CTkFrame):
         if not payload:
             return
 
-        self.clinic_service.add_product(*payload)
+        try:
+            self.clinic_service.add_product(*payload)
+        except ValueError as exc:
+            messagebox.showerror("Validation failed", str(exc))
+            return
+
         self.refresh_table()
         self.clear_form()
 
@@ -139,7 +194,12 @@ class ProductsFrame(ctk.CTkFrame):
         if not payload:
             return
 
-        self.clinic_service.update_product(self.selected_product_id, *payload)
+        try:
+            self.clinic_service.update_product(self.selected_product_id, *payload)
+        except ValueError as exc:
+            messagebox.showerror("Validation failed", str(exc))
+            return
+
         self.refresh_table()
 
     def delete_product(self) -> None:

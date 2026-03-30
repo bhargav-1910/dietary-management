@@ -17,7 +17,12 @@ class HistoryPreviewWindow(ctk.CTkToplevel):
         self.quotation = quotation
         self.mode = mode
 
-        title = "Bill Preview" if mode == "invoice" else "Package Sheet Preview"
+        if mode == "invoice":
+            title = "Bill Preview"
+        elif mode == "quotation":
+            title = "Quotation Preview"
+        else:
+            title = "Package Sheet Preview"
         self.title(title)
         self.geometry("920x640")
         self.minsize(840, 560)
@@ -38,7 +43,7 @@ class HistoryPreviewWindow(ctk.CTkToplevel):
         body.grid_columnconfigure(0, weight=1)
         body.grid_rowconfigure(0, weight=1)
 
-        if mode == "invoice":
+        if mode in ("invoice", "quotation"):
             cols = ("product", "qty", "base", "tax", "final")
             tree = ttk.Treeview(body, columns=cols, show="headings")
             tree.heading("product", text="Product")
@@ -76,7 +81,7 @@ class HistoryPreviewWindow(ctk.CTkToplevel):
         tree.grid(row=0, column=0, sticky="nsew")
         scroll.grid(row=0, column=1, sticky="ns")
 
-        if mode == "invoice":
+        if mode in ("invoice", "quotation"):
             totals_frame = ctk.CTkFrame(self)
             totals_frame.grid(row=3, column=0, padx=18, pady=(0, 10), sticky="ew")
             totals_frame.grid_columnconfigure(0, weight=1)
@@ -113,7 +118,16 @@ class HistoryPreviewWindow(ctk.CTkToplevel):
         ]
 
     def _write_pdf(self, target_path: str | Path) -> Path:
-        if self.mode == "invoice":
+        if self.mode in ("invoice", "quotation"):
+            if self.mode == "invoice":
+                document_title = "Invoice"
+                document_number_label = "Invoice Number"
+                document_number = self.quotation["invoice_number"]
+            else:
+                document_title = "Quotation"
+                document_number_label = "Quotation Number"
+                document_number = f"QTN-{int(self.quotation['id']):04d}"
+
             return self.pdf_service.generate_invoice_pdf(
                 int(self.quotation["id"]),
                 self.quotation["patient"],
@@ -125,7 +139,9 @@ class HistoryPreviewWindow(ctk.CTkToplevel):
                 },
                 self.quotation["date"],
                 output_path=target_path,
-                invoice_number=self.quotation["invoice_number"],
+                invoice_number=document_number,
+                document_title=document_title,
+                document_number_label=document_number_label,
             )
 
         return self.pdf_service.generate_package_sheet(

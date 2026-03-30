@@ -29,16 +29,21 @@ class DatabaseManager:
                 CREATE TABLE IF NOT EXISTS Users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username TEXT NOT NULL UNIQUE,
-                    password_hash BLOB NOT NULL
+                    password_hash BLOB NOT NULL,
+                    recovery_question TEXT,
+                    recovery_answer_hash BLOB
                 );
 
                 CREATE TABLE IF NOT EXISTS Patients (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    owner_user_id INTEGER,
                     name TEXT NOT NULL,
                     age INTEGER,
                     gender TEXT,
                     phone TEXT,
-                    notes TEXT
+                    notes TEXT,
+                    deleted_at TEXT,
+                    FOREIGN KEY (owner_user_id) REFERENCES Users(id) ON DELETE SET NULL
                 );
 
                 CREATE TABLE IF NOT EXISTS Products (
@@ -52,12 +57,15 @@ class DatabaseManager:
 
                 CREATE TABLE IF NOT EXISTS Quotations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    owner_user_id INTEGER,
                     patient_id INTEGER NOT NULL,
                     date TEXT NOT NULL,
                     subtotal REAL NOT NULL DEFAULT 0,
                     total_tax REAL NOT NULL DEFAULT 0,
                     grand_total REAL NOT NULL DEFAULT 0,
-                    FOREIGN KEY (patient_id) REFERENCES Patients(id) ON DELETE RESTRICT
+                    deleted_at TEXT,
+                    FOREIGN KEY (patient_id) REFERENCES Patients(id) ON DELETE RESTRICT,
+                    FOREIGN KEY (owner_user_id) REFERENCES Users(id) ON DELETE SET NULL
                 );
 
                 CREATE TABLE IF NOT EXISTS Quotation_Items (
@@ -85,9 +93,15 @@ class DatabaseManager:
         self._ensure_column(conn, "Quotations", "subtotal", "REAL NOT NULL DEFAULT 0")
         self._ensure_column(conn, "Quotations", "total_tax", "REAL NOT NULL DEFAULT 0")
         self._ensure_column(conn, "Quotations", "grand_total", "REAL NOT NULL DEFAULT 0")
+        self._ensure_column(conn, "Quotations", "deleted_at", "TEXT")
+        self._ensure_column(conn, "Quotations", "owner_user_id", "INTEGER")
 
         self._ensure_column(conn, "Quotation_Items", "base_price", "REAL NOT NULL DEFAULT 0")
         self._ensure_column(conn, "Quotation_Items", "tax_amount", "REAL NOT NULL DEFAULT 0")
+        self._ensure_column(conn, "Patients", "owner_user_id", "INTEGER")
+        self._ensure_column(conn, "Patients", "deleted_at", "TEXT")
+        self._ensure_column(conn, "Users", "recovery_question", "TEXT")
+        self._ensure_column(conn, "Users", "recovery_answer_hash", "BLOB")
 
     def _ensure_column(self, conn: sqlite3.Connection, table: str, column: str, col_type: str) -> None:
         columns = conn.execute(f"PRAGMA table_info({table})").fetchall()
@@ -101,17 +115,85 @@ class DatabaseManager:
             admin_exists = conn.execute("SELECT id FROM Users WHERE username = ?", ("admin",)).fetchone()
             if not admin_exists:
                 password_hash = bcrypt.hashpw("admin123".encode("utf-8"), bcrypt.gensalt())
+                answer_hash = bcrypt.hashpw("admin1234".encode("utf-8"), bcrypt.gensalt())
                 conn.execute(
-                    "INSERT INTO Users(username, password_hash) VALUES(?, ?)",
-                    ("admin", password_hash),
+                    """
+                    INSERT INTO Users(username, password_hash, recovery_question, recovery_answer_hash)
+                    VALUES(?, ?, ?, ?)
+                    """,
+                    ("admin", password_hash, "What is the clinic admin recovery code?", answer_hash),
                 )
 
             doctor_exists = conn.execute("SELECT id FROM Users WHERE username = ?", ("doctor",)).fetchone()
             if not doctor_exists:
                 doctor_hash = bcrypt.hashpw("doctor123".encode("utf-8"), bcrypt.gensalt())
+                doctor_answer_hash = bcrypt.hashpw("doctor1234".encode("utf-8"), bcrypt.gensalt())
                 conn.execute(
-                    "INSERT INTO Users(username, password_hash) VALUES(?, ?)",
-                    ("doctor", doctor_hash),
+                    """
+                    INSERT INTO Users(username, password_hash, recovery_question, recovery_answer_hash)
+                    VALUES(?, ?, ?, ?)
+                    """,
+                    ("doctor", doctor_hash, "What is the doctor recovery code?", doctor_answer_hash),
+                )
+
+            conn.execute(
+                """
+                UPDATE Users
+                SET recovery_question = ?
+                WHERE username = ? AND (recovery_question IS NULL OR TRIM(recovery_question) = '')
+                """,
+                ("What is the clinic admin recovery code?", "admin"),
+            )
+            conn.execute(
+                """
+                UPDATE Users
+                SET recovery_question = ?
+                WHERE username = ? AND (recovery_question IS NULL OR TRIM(recovery_question) = '')
+                """,
+                ("What is the doctor recovery code?", "doctor"),
+            )
+
+            admin_recovery_row = conn.execute(
+                "SELECT recovery_answer_hash FROM Users WHERE username = ?",
+                ("admin",),
+            ).fetchone()
+            if admin_recovery_row and not admin_recovery_row["recovery_answer_hash"]:
+                conn.execute(
+                    "UPDATE Users SET recovery_answer_hash = ? WHERE username = ?",
+                    (bcrypt.hashpw("admin1234".encode("utf-8"), bcrypt.gensalt()), "admin"),
+                )
+
+            doctor_recovery_row = conn.execute(
+                "SELECT recovery_answer_hash FROM Users WHERE username = ?",
+                ("doctor",),
+            ).fetchone()
+            if doctor_recovery_row and not doctor_recovery_row["recovery_answer_hash"]:
+                conn.execute(
+                    "UPDATE Users SET recovery_answer_hash = ? WHERE username = ?",
+                    (bcrypt.hashpw("doctor1234".encode("utf-8"), bcrypt.gensalt()), "doctor"),
+                )
+
+            admin_user_row = conn.execute("SELECT id FROM Users WHERE username = ?", ("admin",)).fetchone()
+            admin_user_id = admin_user_row["id"] if admin_user_row else None
+            if admin_user_id is not None:
+                conn.execute(
+                    "UPDATE Patients SET owner_user_id = ? WHERE owner_user_id IS NULL",
+                    (admin_user_id,),
+                )
+                conn.execute(
+                    """
+                    UPDATE Quotations
+                    SET owner_user_id = (
+                        SELECT p.owner_user_id
+                        FROM Patients p
+                        WHERE p.id = Quotations.patient_id
+                    )
+                    WHERE owner_user_id IS NULL
+                    """,
+                )
+                conn.execute(
+                    "UPDATE Quotations SET owner_user_id = ? WHERE owner_user_id IS NULL",
+                    (admin_user_id,),
                 )
 
             pin_row = conn.execute("SELECT value FROM Settings WHERE key = ?", ("admin_pin_hash",)).fetchone()

@@ -20,8 +20,9 @@ class ClinicApp(ctk.CTk):
         self.geometry("1200x760")
         self.minsize(1080, 680)
 
-        ctk.set_appearance_mode("System")
+        ctk.set_appearance_mode("Light")
         ctk.set_default_color_theme("blue")
+        self.configure(fg_color="#f8f9fa")
 
         self.db = DatabaseManager()
         self.auth_service = AuthService(self.db)
@@ -41,10 +42,17 @@ class ClinicApp(ctk.CTk):
 
     def show_login(self) -> None:
         self.current_user = None
+        self.clinic_service.set_current_user(None)
         frame = LoginFrame(self, on_login_success=self.on_login_success)
         self._swap_frame(frame)
 
     def on_login_success(self, username: str) -> None:
+        user_id = self.auth_service.get_user_id(username)
+        if user_id is None:
+            self.show_login()
+            return
+
+        self.clinic_service.set_current_user(user_id)
         self.current_user = username
         frame = MainFrame(
             self,

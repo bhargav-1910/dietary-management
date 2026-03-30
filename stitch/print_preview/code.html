@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Print Preview - Clinical Sanctuary</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Manrope & Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#191c1d",
+              "error": "#ba1a1a",
+              "on-error": "#ffffff",
+              "inverse-surface": "#2e3132",
+              "on-secondary-fixed": "#00201b",
+              "on-secondary-container": "#006f62",
+              "secondary-container": "#94f0df",
+              "on-error-container": "#93000a",
+              "inverse-primary": "#a4c9ff",
+              "surface-variant": "#e1e3e4",
+              "secondary-fixed-dim": "#7ad7c6",
+              "surface-container-high": "#e7e8e9",
+              "on-tertiary-fixed-variant": "#633f00",
+              "on-primary-container": "#fdfcff",
+              "on-primary": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "error-container": "#ffdad6",
+              "tertiary": "#7f5300",
+              "tertiary-container": "#a06900",
+              "on-secondary-fixed-variant": "#005047",
+              "secondary-fixed": "#97f3e2",
+              "background": "#f8f9fa",
+              "on-secondary": "#ffffff",
+              "secondary": "#006b5e",
+              "primary-fixed": "#d4e3ff",
+              "inverse-on-surface": "#f0f1f2",
+              "primary-container": "#2976c7",
+              "tertiary-fixed": "#ffddb4",
+              "on-surface-variant": "#414751",
+              "outline-variant": "#c1c7d3",
+              "surface-bright": "#f8f9fa",
+              "outline": "#717783",
+              "on-primary-fixed": "#001c39",
+              "primary": "#005da7",
+              "surface-container-lowest": "#ffffff",
+              "on-primary-fixed-variant": "#004883",
+              "on-tertiary-fixed": "#291800",
+              "surface-container": "#edeeef",
+              "primary-fixed-dim": "#a4c9ff",
+              "on-tertiary-container": "#fffbff",
+              "tertiary-fixed-dim": "#ffb953",
+              "surface-tint": "#0060ac",
+              "surface": "#f8f9fa",
+              "surface-dim": "#d9dadb",
+              "surface-container-low": "#f3f4f5",
+              "surface-container-highest": "#e1e3e4",
+              "on-background": "#191c1d"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .document-shadow { shadow: 0 4px 20px -2px rgba(25, 28, 29, 0.04); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar Navigation Shell -->
+<!-- Authority: Shared Components JSON (TopAppBar) -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm dark:shadow-none flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-slate-900 dark:text-slate-100">Clinical Sanctuary</span>
+<div class="h-6 w-[1px] bg-outline-variant/30"></div>
+<h1 class="font-manrope font-bold text-lg tracking-tight text-slate-900 dark:text-slate-100">Print Preview</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-primary-fixed-variant font-medium text-sm transition-all active:scale-95 duration-200 hover:bg-slate-50">
+                Save as PDF
+            </button>
+<button class="px-6 py-2 rounded-full bg-gradient-to-br from-primary to-primary-container text-white font-semibold text-sm shadow-md transition-all active:scale-95 duration-200 hover:brightness-110">
+                Print
+            </button>
+<div class="ml-2 p-2 rounded-full hover:bg-slate-50 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-error" data-icon="close">close</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-16 px-6 lg:px-12 flex flex-col items-center">
+<div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12">
+<!-- Card 1: Invoice Preview -->
+<div class="flex flex-col gap-4">
+<p class="text-xs font-semibold text-on-surface-variant/60 uppercase tracking-widest pl-2">Invoice Preview</p>
+<div class="bg-surface-container-lowest rounded-xl p-10 min-h-[700px] shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] flex flex-col">
+<!-- Invoice Header -->
+<div class="flex justify-between items-start mb-12">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg" data-icon="health_metrics">health_metrics</span>
+</div>
+<span class="font-headline font-extrabold text-primary text-xl">Clinical Sanctuary</span>
+</div>
+<p class="text-xs text-on-surface-variant">Dietary Management Excellence</p>
+</div>
+<div class="text-right">
+<h2 class="font-headline font-bold text-2xl text-on-surface">INVOICE</h2>
+<p class="text-sm font-medium text-primary">#QT-8821</p>
+</div>
+</div>
+<!-- Patient Details -->
+<div class="grid grid-cols-2 gap-8 mb-12 py-6 border-y border-outline-variant/10">
+<div>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Patient</p>
+<p class="font-headline font-bold text-on-surface">Sarah Jenkins</p>
+<p class="text-sm text-on-surface-variant">sarah.j@example.com</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Date Issued</p>
+<p class="font-headline font-bold text-on-surface">Oct 24, 2023</p>
+<p class="text-sm text-on-surface-variant">Due in 15 days</p>
+</div>
+</div>
+<!-- Table -->
+<div class="flex-grow">
+<table class="w-full text-left">
+<thead>
+<tr class="text-[10px] uppercase tracking-widest text-on-surface-variant">
+<th class="pb-4 font-medium">Product</th>
+<th class="pb-4 font-medium text-center">Qty</th>
+<th class="pb-4 font-medium text-right">Total</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="border-b border-outline-variant/5">
+<td class="py-4 font-medium text-on-surface">Bio-Protein Isolate <span class="block text-xs font-normal text-on-surface-variant">High-bioavailability whey formula</span></td>
+<td class="py-4 text-center">2</td>
+<td class="py-4 text-right font-medium">$189.90</td>
+</tr>
+<tr class="border-b border-outline-variant/5">
+<td class="py-4 font-medium text-on-surface">Digestive Enzyme Catalyst <span class="block text-xs font-normal text-on-surface-variant">Plant-based enzyme blend</span></td>
+<td class="py-4 text-center">3</td>
+<td class="py-4 text-right font-medium">$345.00</td>
+</tr>
+<tr>
+<td class="py-4 font-medium text-on-surface">Omega-3 Pure Flow <span class="block text-xs font-normal text-on-surface-variant">Triple-strength fish oil</span></td>
+<td class="py-4 text-center">1</td>
+<td class="py-4 text-right font-medium">$85.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Totals -->
+<div class="mt-8 pt-8 border-t-2 border-primary-fixed">
+<div class="flex justify-end gap-12 mb-2">
+<span class="text-sm text-on-surface-variant">Subtotal</span>
+<span class="text-sm font-medium w-24 text-right">$619.90</span>
+</div>
+<div class="flex justify-end gap-12 mb-4">
+<span class="text-sm text-on-surface-variant">Tax (8%)</span>
+<span class="text-sm font-medium w-24 text-right">$49.70</span>
+</div>
+<div class="flex justify-end gap-12">
+<span class="font-headline font-bold text-lg text-on-surface">Grand Total</span>
+<span class="font-headline font-bold text-lg text-primary w-24 text-right">$669.60</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Package Sheet Preview -->
+<div class="flex flex-col gap-4">
+<p class="text-xs font-semibold text-on-surface-variant/60 uppercase tracking-widest pl-2">Package Sheet Preview</p>
+<div class="bg-surface-container-lowest rounded-xl p-10 min-h-[700px] shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] flex flex-col">
+<!-- Sheet Header -->
+<div class="mb-12">
+<h2 class="font-headline font-extrabold text-3xl text-on-surface tracking-tight">Package Sheet</h2>
+<div class="h-1 w-12 bg-primary mt-3"></div>
+</div>
+<!-- Patient Identifer -->
+<div class="mb-10 bg-surface-container-low rounded-lg p-6 flex items-center justify-between">
+<div>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Patient Record</p>
+<p class="font-headline font-bold text-on-surface text-lg">Sarah Jenkins</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Clinic Reference</p>
+<p class="font-medium text-on-surface-variant text-sm">CS-SJ-2023-1024</p>
+</div>
+</div>
+<!-- Instruction List -->
+<div class="flex-grow space-y-8">
+<div>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<h3 class="font-headline font-bold text-on-surface">Bio-Protein Isolate</h3>
+</div>
+<div class="ml-9 border-l-2 border-outline-variant/20 pl-6 pb-2">
+<div class="grid grid-cols-2 gap-4">
+<div class="h-10 border-b border-outline-variant/30 flex items-end pb-1">
+<span class="text-[10px] text-on-surface-variant italic">Dosage instructions...</span>
+</div>
+<div class="h-10 border-b border-outline-variant/30 flex items-end pb-1">
+<span class="text-[10px] text-on-surface-variant italic">Frequency...</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<h3 class="font-headline font-bold text-on-surface">Digestive Enzyme Catalyst</h3>
+</div>
+<div class="ml-9 border-l-2 border-outline-variant/20 pl-6 pb-2">
+<div class="grid grid-cols-2 gap-4">
+<div class="h-10 border-b border-outline-variant/30 flex items-end pb-1">
+<span class="text-[10px] text-on-surface-variant italic">Take 15 mins before meals</span>
+</div>
+<div class="h-10 border-b border-outline-variant/30 flex items-end pb-1">
+<span class="text-[10px] text-on-surface-variant italic">3x daily</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<h3 class="font-headline font-bold text-on-surface">Omega-3 Pure Flow</h3>
+</div>
+<div class="ml-9 border-l-2 border-outline-variant/20 pl-6 pb-2">
+<div class="grid grid-cols-2 gap-4">
+<div class="h-10 border-b border-outline-variant/30 flex items-end pb-1">
+<span class="text-[10px] text-on-surface-variant italic">With evening meal</span>
+</div>
+<div class="h-10 border-b border-outline-variant/30 flex items-end pb-1">
+<span class="text-[10px] text-on-surface-variant italic">1 capsule</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- QR and Footer -->
+<div class="mt-12 flex items-center justify-between opacity-40">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded border border-outline-variant/20 flex items-center justify-center overflow-hidden">
+<img alt="Verification QR Code" class="w-10 h-10 grayscale" data-alt="minimalist clean black and white qr code icon for medical verification" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSKkTyDH7P8rEB6GKm06ouraB1lco_ebSWhJTjZfpnMJwbKYUXNE0XHZQxAa1KwJZ7ZP29raRAU-_Zll9s34l_xkKit7bzknbSb4l2wGOG2Cj3qOvV0drXNNSiQ4AjMmj5rxX3S7jdo1l_UUsp4zTckkEuq8ZGPYisQk06395U0MH27QNed7AmyrLbMDwFi60uf4cBuITXXFM68pS7qWM0JSalA_yyGQdBKTuzVxdkrhIle17yHsZAxPlpaEdNXgG2pQiw4G43vbYk"/>
+</div>
+<p class="text-[10px] leading-tight">Verified Digital Prescription<br/>Clinical Sanctuary Hub</p>
+</div>
+<p class="text-[10px] font-bold">PAGE 01 / 01</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Floating Helper (Not in JSON but fits Sanctuary feel) -->
+<div class="fixed bottom-8 right-8 flex flex-col items-end gap-4">
+<div class="bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 max-w-xs animate-in slide-in-from-bottom-4">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="info">info</span>
+<p class="text-xs font-medium">Layout optimized for standard A4 printing. Margins adjusted automatically.</p>
+</div>
+</div>
+</main>
+</body></html>

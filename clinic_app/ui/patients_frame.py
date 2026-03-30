@@ -21,6 +21,21 @@ class PatientsFrame(ctk.CTkFrame):
         self.on_generate_quotation = on_generate_quotation
         self.on_view_quotation = on_view_quotation
 
+        self.palette = {
+            "surface": "#f8f9fa",
+            "surface_low": "#f3f4f5",
+            "card": "#ffffff",
+            "text": "#191c1d",
+            "muted": "#414751",
+            "primary": "#005da7",
+            "primary_hover": "#004883",
+            "secondary": "#e7e8e9",
+            "secondary_hover": "#d9dadb",
+            "danger": "#ba1a1a",
+            "danger_hover": "#93000a",
+        }
+        self.configure(fg_color=self.palette["surface"])
+
         self.selected_patient: dict | None = None
         self.patient_dropdown_map: dict[str, dict] = {}
 
@@ -28,25 +43,59 @@ class PatientsFrame(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=2)
         self.grid_rowconfigure(2, weight=1)
 
-        ctk.CTkLabel(self, text="Patients", font=ctk.CTkFont(size=24, weight="bold")).grid(
+        ctk.CTkLabel(
+            self,
+            text="Patients Management",
+            text_color=self.palette["text"],
+            font=ctk.CTkFont(size=30, weight="bold"),
+        ).grid(
             row=0, column=0, padx=20, pady=(16, 8), sticky="w"
         )
 
-        top_bar = ctk.CTkFrame(self)
+        top_bar = ctk.CTkFrame(self, fg_color=self.palette["card"], corner_radius=12, border_width=1, border_color="#dfe3eb")
         top_bar.grid(row=1, column=0, columnspan=2, sticky="ew", padx=20, pady=(0, 10))
         top_bar.grid_columnconfigure(3, weight=1)
 
         self.search_var = ctk.StringVar()
-        ctk.CTkEntry(top_bar, width=220, textvariable=self.search_var, placeholder_text="Search name or phone").grid(
+        ctk.CTkEntry(
+            top_bar,
+            width=220,
+            textvariable=self.search_var,
+            placeholder_text="Search name or phone",
+            fg_color=self.palette["surface_low"],
+            border_width=0,
+        ).grid(
             row=0, column=0, padx=8, pady=8
         )
-        ctk.CTkButton(top_bar, text="Search", command=self.refresh_table).grid(row=0, column=1, padx=8, pady=8)
-        ctk.CTkButton(top_bar, text="Clear", command=self.clear_search).grid(row=0, column=2, padx=8, pady=8)
+        ctk.CTkButton(
+            top_bar,
+            text="Search",
+            fg_color=self.palette["primary"],
+            hover_color=self.palette["primary_hover"],
+            command=self.refresh_table,
+        ).grid(row=0, column=1, padx=8, pady=8)
+        ctk.CTkButton(
+            top_bar,
+            text="Clear",
+            fg_color=self.palette["secondary"],
+            hover_color=self.palette["secondary_hover"],
+            text_color=self.palette["text"],
+            command=self.clear_search,
+        ).grid(row=0, column=2, padx=8, pady=8)
 
-        self.patient_combo = ctk.CTkComboBox(top_bar, width=360, values=[], command=self._select_from_dropdown)
+        self.patient_combo = ctk.CTkComboBox(
+            top_bar,
+            width=360,
+            values=[],
+            command=self._select_from_dropdown,
+            fg_color=self.palette["surface_low"],
+            border_width=0,
+            button_color=self.palette["primary"],
+            button_hover_color=self.palette["primary_hover"],
+        )
         self.patient_combo.grid(row=0, column=3, padx=8, pady=8, sticky="e")
 
-        table_wrap = ctk.CTkFrame(self)
+        table_wrap = ctk.CTkFrame(self, fg_color=self.palette["card"], corner_radius=12, border_width=1, border_color="#dfe3eb")
         table_wrap.grid(row=2, column=0, padx=(20, 10), pady=(0, 18), sticky="nsew")
         table_wrap.grid_columnconfigure(0, weight=1)
         table_wrap.grid_rowconfigure(0, weight=1)
@@ -69,7 +118,7 @@ class PatientsFrame(ctk.CTkFrame):
         yscroll.grid(row=0, column=1, sticky="ns")
         self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
 
-        form = ctk.CTkFrame(self)
+        form = ctk.CTkFrame(self, fg_color=self.palette["card"], corner_radius=12, border_width=1, border_color="#dfe3eb")
         form.grid(row=2, column=1, padx=(10, 20), pady=(0, 18), sticky="nsew")
         form.grid_columnconfigure(1, weight=1)
         form.grid_rowconfigure(9, weight=1)
@@ -91,9 +140,27 @@ class PatientsFrame(ctk.CTkFrame):
         for idx in range(3):
             button_bar.grid_columnconfigure(idx, weight=1)
 
-        ctk.CTkButton(button_bar, text="Add", command=self.add_patient).grid(row=0, column=0, padx=4, sticky="ew")
-        ctk.CTkButton(button_bar, text="Update", command=self.update_patient).grid(row=0, column=1, padx=4, sticky="ew")
-        ctk.CTkButton(button_bar, text="Delete", fg_color="#b91c1c", hover_color="#991b1b", command=self.delete_patient).grid(
+        ctk.CTkButton(
+            button_bar,
+            text="Add",
+            fg_color=self.palette["primary"],
+            hover_color=self.palette["primary_hover"],
+            command=self.add_patient,
+        ).grid(row=0, column=0, padx=4, sticky="ew")
+        ctk.CTkButton(
+            button_bar,
+            text="Update",
+            fg_color=self.palette["primary"],
+            hover_color=self.palette["primary_hover"],
+            command=self.update_patient,
+        ).grid(row=0, column=1, padx=4, sticky="ew")
+        ctk.CTkButton(
+            button_bar,
+            text="Delete",
+            fg_color=self.palette["danger"],
+            hover_color=self.palette["danger_hover"],
+            command=self.delete_patient,
+        ).grid(
             row=0, column=2, padx=4, sticky="ew"
         )
 
@@ -101,18 +168,37 @@ class PatientsFrame(ctk.CTkFrame):
             form,
             text="Generate Quotation",
             height=40,
+            fg_color=self.palette["primary"],
+            hover_color=self.palette["primary_hover"],
             command=self.generate_quotation,
         ).grid(row=6, column=0, columnspan=2, sticky="ew", padx=8, pady=(12, 8))
 
-        ctk.CTkButton(form, text="Clear Form", fg_color="gray", command=self.clear_form).grid(
-            row=7, column=0, columnspan=2, sticky="ew", padx=8
+        ctk.CTkButton(
+            form,
+            text="Clear Form",
+            fg_color=self.palette["secondary"],
+            hover_color=self.palette["secondary_hover"],
+            text_color=self.palette["text"],
+            command=self.clear_form,
+        ).grid(
+            row=7, column=0, sticky="ew", padx=(8, 4)
+        )
+        ctk.CTkButton(
+            form,
+            text="Restore Archived",
+            fg_color=self.palette["secondary"],
+            hover_color=self.palette["secondary_hover"],
+            text_color=self.palette["text"],
+            command=self.restore_archived_patient,
+        ).grid(
+            row=7, column=1, sticky="ew", padx=(4, 8)
         )
 
         ctk.CTkLabel(form, text="Quotation History", font=ctk.CTkFont(size=16, weight="bold")).grid(
             row=8, column=0, columnspan=2, padx=8, pady=(12, 4), sticky="w"
         )
 
-        history_wrap = ctk.CTkFrame(form)
+        history_wrap = ctk.CTkFrame(form, fg_color=self.palette["surface_low"], corner_radius=10)
         history_wrap.grid(row=9, column=0, columnspan=2, padx=8, pady=(0, 6), sticky="nsew")
         history_wrap.grid_columnconfigure(0, weight=1)
         history_wrap.grid_rowconfigure(0, weight=1)
@@ -135,24 +221,59 @@ class PatientsFrame(ctk.CTkFrame):
 
         history_actions = ctk.CTkFrame(form, fg_color="transparent")
         history_actions.grid(row=10, column=0, columnspan=2, padx=8, pady=(4, 0), sticky="ew")
-        for idx in range(3):
+        for idx in range(4):
             history_actions.grid_columnconfigure(idx, weight=1)
 
-        ctk.CTkButton(history_actions, text="View", command=self.view_selected_history).grid(
+        ctk.CTkButton(
+            history_actions,
+            text="View",
+            fg_color=self.palette["primary"],
+            hover_color=self.palette["primary_hover"],
+            command=self.view_selected_history,
+        ).grid(
             row=0, column=0, padx=4, sticky="ew"
         )
-        ctk.CTkButton(history_actions, text="Reprint Bill", command=lambda: self.view_selected_history("invoice")).grid(
+        ctk.CTkButton(
+            history_actions,
+            text="Reprint Quotation",
+            fg_color=self.palette["secondary"],
+            hover_color=self.palette["secondary_hover"],
+            text_color=self.palette["text"],
+            command=lambda: self.view_selected_history("quotation"),
+        ).grid(
             row=0, column=1, padx=4, sticky="ew"
         )
-        ctk.CTkButton(history_actions, text="Reprint Package", command=lambda: self.view_selected_history("package")).grid(
+        ctk.CTkButton(
+            history_actions,
+            text="Reprint Bill",
+            fg_color=self.palette["secondary"],
+            hover_color=self.palette["secondary_hover"],
+            text_color=self.palette["text"],
+            command=lambda: self.view_selected_history("invoice"),
+        ).grid(
             row=0, column=2, padx=4, sticky="ew"
+        )
+        ctk.CTkButton(
+            history_actions,
+            text="Reprint Package",
+            fg_color=self.palette["secondary"],
+            hover_color=self.palette["secondary_hover"],
+            text_color=self.palette["text"],
+            command=lambda: self.view_selected_history("package"),
+        ).grid(
+            row=0, column=3, padx=4, sticky="ew"
         )
 
         self.refresh_table()
 
     def _form_row(self, frame: ctk.CTkFrame, row: int, label: str, var: ctk.StringVar) -> None:
-        ctk.CTkLabel(frame, text=label).grid(row=row, column=0, padx=8, pady=6, sticky="w")
-        ctk.CTkEntry(frame, textvariable=var).grid(row=row, column=1, padx=8, pady=6, sticky="ew")
+        ctk.CTkLabel(frame, text=label, text_color=self.palette["muted"]).grid(row=row, column=0, padx=8, pady=6, sticky="w")
+        ctk.CTkEntry(
+            frame,
+            textvariable=var,
+            fg_color=self.palette["surface_low"],
+            border_width=0,
+        ).grid(row=row, column=1, padx=8, pady=6, sticky="ew")
 
     def clear_search(self) -> None:
         self.search_var.set("")
@@ -256,7 +377,12 @@ class PatientsFrame(ctk.CTkFrame):
         if not payload:
             return
 
-        self.clinic_service.add_patient(*payload)
+        try:
+            self.clinic_service.add_patient(*payload)
+        except ValueError as exc:
+            messagebox.showerror("Validation failed", str(exc))
+            return
+
         self.refresh_table()
         self.clear_form()
 
@@ -269,7 +395,12 @@ class PatientsFrame(ctk.CTkFrame):
         if not payload:
             return
 
-        self.clinic_service.update_patient(self.selected_patient["id"], *payload)
+        try:
+            self.clinic_service.update_patient(self.selected_patient["id"], *payload)
+        except ValueError as exc:
+            messagebox.showerror("Validation failed", str(exc))
+            return
+
         self.refresh_table()
         self.refresh_history()
 
@@ -281,9 +412,63 @@ class PatientsFrame(ctk.CTkFrame):
         if not messagebox.askyesno("Confirm delete", "Delete selected patient?"):
             return
 
-        self.clinic_service.delete_patient(self.selected_patient["id"])
+        ok, message = self.clinic_service.delete_patient(self.selected_patient["id"])
+        if not ok:
+            if "quotation record" in message:
+                should_delete_with_history = messagebox.askyesno(
+                    "Delete patient history too?",
+                    (
+                        f"{message}\n\n"
+                        "This patient cannot be deleted while quotation history exists.\n"
+                        "Do you want to delete patient and all associated quotations?"
+                    ),
+                )
+                if not should_delete_with_history:
+                    return
+
+                ok, message = self.clinic_service.delete_patient(self.selected_patient["id"], force=True)
+                if not ok:
+                    messagebox.showerror("Delete failed", message)
+                    return
+            else:
+                messagebox.showerror("Delete failed", message)
+                return
+
         self.refresh_table()
         self.clear_form()
+        messagebox.showinfo("Archived", message)
+
+    def restore_archived_patient(self) -> None:
+        archived = self.clinic_service.list_archived_patients()
+        if not archived:
+            messagebox.showinfo("No archived patients", "No archived patients are available to restore.")
+            return
+
+        options = [f"{row['id']} - {row['name']} ({row.get('phone') or '-'})" for row in archived]
+        dialog = ctk.CTkInputDialog(
+            text=(
+                "Enter archived patient ID to restore:\n\n"
+                "Available archived patients:\n"
+                + "\n".join(options[:10])
+                + ("\n..." if len(options) > 10 else "")
+            ),
+            title="Restore Archived Patient",
+        )
+        value = dialog.get_input() if dialog else None
+        if not value:
+            return
+        if not value.strip().isdigit():
+            messagebox.showwarning("Invalid input", "Please enter a valid numeric patient ID.")
+            return
+
+        patient_id = int(value.strip())
+        ok, message = self.clinic_service.restore_patient(patient_id, restore_quotations=True)
+        if not ok:
+            messagebox.showerror("Restore failed", message)
+            return
+
+        self.refresh_table()
+        messagebox.showinfo("Restored", message)
 
     def generate_quotation(self) -> None:
         if not self.selected_patient:

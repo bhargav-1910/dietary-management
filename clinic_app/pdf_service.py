@@ -31,6 +31,8 @@ class PDFService:
         quotation_date: str,
         output_path: str | Path | None = None,
         invoice_number: str | None = None,
+        document_title: str = "Invoice",
+        document_number_label: str = "Invoice Number",
     ) -> Path:
         file_path = self._as_path(output_path, self.output_dir / f"invoice_{quotation_id}.pdf")
         file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -41,7 +43,8 @@ class PDFService:
         invoice_label = invoice_number or f"INV-{quotation_id:04d}"
 
         elements.append(Paragraph("Dietary Clinic", styles["Title"]))
-        elements.append(Paragraph(f"Invoice Number: {invoice_label}", styles["Normal"]))
+        elements.append(Paragraph(document_title, styles["Heading2"]))
+        elements.append(Paragraph(f"{document_number_label}: {invoice_label}", styles["Normal"]))
         elements.append(Paragraph(f"Date: {quotation_date}", styles["Normal"]))
         elements.append(Spacer(1, 8))
 

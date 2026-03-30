@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Clinical Sanctuary - Product Management</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-dim": "#d9dadb",
+              "surface": "#f8f9fa",
+              "on-tertiary-fixed": "#291800",
+              "on-primary-fixed-variant": "#004883",
+              "inverse-primary": "#a4c9ff",
+              "on-background": "#191c1d",
+              "surface-tint": "#0060ac",
+              "surface-container-highest": "#e1e3e4",
+              "secondary-fixed-dim": "#7ad7c6",
+              "on-surface-variant": "#414751",
+              "outline": "#717783",
+              "background": "#f8f9fa",
+              "surface-variant": "#e1e3e4",
+              "on-error-container": "#93000a",
+              "surface-container-low": "#f3f4f5",
+              "on-secondary-fixed": "#00201b",
+              "primary-fixed-dim": "#a4c9ff",
+              "outline-variant": "#c1c7d3",
+              "tertiary": "#7f5300",
+              "on-error": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary": "#ffffff",
+              "on-secondary-fixed-variant": "#005047",
+              "secondary": "#006b5e",
+              "surface-bright": "#f8f9fa",
+              "tertiary-container": "#a06900",
+              "surface-container": "#edeeef",
+              "on-primary-fixed": "#001c39",
+              "on-tertiary": "#ffffff",
+              "on-tertiary-container": "#fffbff",
+              "on-tertiary-fixed-variant": "#633f00",
+              "secondary-container": "#94f0df",
+              "on-primary-container": "#fdfcff",
+              "primary": "#005da7",
+              "error-container": "#ffdad6",
+              "tertiary-fixed": "#ffddb4",
+              "inverse-surface": "#2e3132",
+              "primary-fixed": "#d4e3ff",
+              "surface-container-high": "#e7e8e9",
+              "secondary-fixed": "#97f3e2",
+              "on-secondary-container": "#006f62",
+              "error": "#ba1a1a",
+              "tertiary-fixed-dim": "#ffb953",
+              "inverse-on-surface": "#f0f1f2",
+              "on-surface": "#191c1d",
+              "on-primary": "#ffffff",
+              "primary-container": "#2976c7"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "1rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold text-blue-900 dark:text-blue-100 font-headline tracking-tight">Clinical Sanctuary</span>
+<div class="hidden md:flex items-center bg-surface-container-highest px-4 py-2 rounded-full gap-3 w-80">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-on-surface-variant/60" placeholder="Search medical inventory..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-50 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
+<div class="flex items-center gap-3 pl-2">
+<span class="hidden md:block text-sm font-semibold font-headline text-blue-700">Dr. Julian Thorne</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container shadow-sm">
+<img alt="Logged-in doctor profile" class="w-full h-full object-cover" data-alt="professional portrait of a middle-aged male doctor with a calm expression in a bright clinical setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwysCHpn-SPXUyIeAf5iCXXIPNjP8iImCmAuoE5D3Dy0CiSN4i5aZn1SP3xzi6U2-ywrsm5ktqQSzd9PL2_cMLzQZhVklhLBCUwF5x-3kZlAdHJ4UrZLN-BzdAmvOcUoky8lPdXyL9vVRlbKSUz4cKs_atahA-ZC9t4L6WVmv67GvF8xEzpmBvvIHjVov9PXubUjz56cupr0P6pSExragKT6jmnSklp1AIFlv0p6o8FlweuvF54zxZ3SUN7Us9T8QwAzztuXycVm40"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-slate-50 dark:bg-slate-950 flex flex-col py-8 gap-2 mt-16 shadow-none">
+<div class="px-6 mb-8 flex flex-col">
+<span class="text-lg font-extrabold text-blue-800 dark:text-blue-200 font-headline">Dietary Admin</span>
+<span class="text-xs text-on-surface-variant font-medium opacity-70">Medical Management</span>
+</div>
+<nav class="flex-grow">
+<a class="text-slate-500 dark:text-slate-400 flex items-center gap-3 px-6 py-3 font-manrope text-sm font-medium hover:text-blue-600 transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 flex items-center gap-3 px-6 py-3 font-manrope text-sm font-medium hover:text-blue-600 transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Patients</span>
+</a>
+<!-- Active Tab: Products -->
+<a class="relative text-blue-700 dark:text-blue-400 font-semibold font-manrope text-sm flex items-center gap-3 px-6 py-3 before:content-[''] before:absolute before:left-0 before:w-1 before:h-6 before:bg-blue-600 before:rounded-r-full active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="nutrition">nutrition</span>
+<span>Products</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 flex items-center gap-3 px-6 py-3 font-manrope text-sm font-medium hover:text-blue-600 transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="request_quote">request_quote</span>
+<span>Generate Quotation</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="text-slate-500 dark:text-slate-400 flex items-center gap-3 py-3 font-manrope text-sm font-medium hover:text-error transition-all active:translate-x-1 duration-150">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-10 min-h-screen bg-surface">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+<div>
+<h1 class="text-4xl font-extrabold font-headline tracking-tight text-on-surface mb-2">Inventory Management</h1>
+<p class="text-on-surface-variant text-md max-w-xl">Curate and manage clinical supplements, medical supplies, and prescribed nutrition with precision.</p>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>New Product</span>
+</button>
+</div>
+<!-- Filters & Actions Bar -->
+<div class="bg-surface-container-lowest rounded-lg p-4 mb-8 flex flex-col md:flex-row items-center gap-4 shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)]">
+<div class="flex items-center gap-4 w-full md:w-auto">
+<span class="text-sm font-semibold text-on-surface-variant px-2">Filter by</span>
+<div class="relative group">
+<select class="appearance-none bg-surface-container-low border-none rounded-xl px-4 py-2 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 cursor-pointer text-on-surface">
+<option>All Categories</option>
+<option>Nutritional Supplements</option>
+<option>Medical Equipment</option>
+<option>Hygiene &amp; Care</option>
+<option>Surgical Consumables</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+<div class="relative group">
+<select class="appearance-none bg-surface-container-low border-none rounded-xl px-4 py-2 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 cursor-pointer text-on-surface">
+<option>Stock Status</option>
+<option>In Stock</option>
+<option>Low Stock</option>
+<option>Out of Stock</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="md:ml-auto flex items-center gap-3">
+<span class="text-xs text-on-surface-variant font-medium">Showing 4 of 124 products</span>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="sort">sort</span>
+</button>
+</div>
+</div>
+<!-- Product Grid (Asymmetric Floating Rows) -->
+<div class="space-y-4">
+<!-- Table Header -->
+<div class="grid grid-cols-12 gap-4 px-8 py-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant/60">
+<div class="col-span-5">Product Details</div>
+<div class="col-span-2">Category</div>
+<div class="col-span-2">Stock Level</div>
+<div class="col-span-1">Price</div>
+<div class="col-span-2 text-right">Actions</div>
+</div>
+<!-- Product Row 1 -->
+<div class="grid grid-cols-12 gap-4 items-center bg-surface-container-lowest p-4 px-8 rounded-lg shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] hover:shadow-[0_8px_30px_-4px_rgba(25,28,29,0.08)] transition-shadow group">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl overflow-hidden flex-shrink-0">
+<img alt="Omega-3 Supplement" class="w-full h-full object-cover" data-alt="high-quality bottle of pharmaceutical grade omega-3 capsules on a clean white surface with soft blue shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYVh24opgHU4zWZi4Mdxkpfff4pgv9_hkkRmZphJe7JC1PpCXRu5oro2E3-JBq7YxFQQm22JOesI3Vb4HfsGyTW3GQktVmRwlKwMKYjxP9wEgdtcmU0lmCN67pQ7oelmZXo_1DMDB4caoxEPoT6a5NQCCOywWy9jE9uPEE06mYd7-Bn-km2ipDuDEeocGQxD2I0O0O_OyXhxml8S8nIIbncAv0jjArcMPjWMZHs2qHAdfTunvG2T-yGEYt0Wb_CbSn6Y5ZRHjrUDyw"/>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface">Pure-Flow Omega 3</h3>
+<p class="text-xs text-on-surface-variant">SKU: CS-NUT-001 • High-potency EPA/DHA</p>
+</div>
+</div>
+<div class="col-span-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-semibold">Nutrition</span>
+</div>
+<div class="col-span-2 flex items-center gap-2">
+<div class="w-24 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%] rounded-full"></div>
+</div>
+<span class="text-xs font-medium">420 Units</span>
+</div>
+<div class="col-span-1 font-bold text-on-surface">$45.00</div>
+<div class="col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary-fixed hover:text-on-primary-fixed rounded-full transition-colors" title="Edit">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-error-container hover:text-on-error-container rounded-full transition-colors" title="Delete">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors" title="View details">
+<span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Product Row 2 (Low Stock Example) -->
+<div class="grid grid-cols-12 gap-4 items-center bg-surface-container-lowest p-4 px-8 rounded-lg shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] hover:shadow-[0_8px_30px_-4px_rgba(25,28,29,0.08)] transition-shadow group">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl overflow-hidden flex-shrink-0">
+<img alt="Digital Blood Pressure Monitor" class="w-full h-full object-cover" data-alt="modern white digital blood pressure monitor with clear screen display on a grey minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx5YI5RjB-GHdIeUhWxo0d3jD49gSrmkrz3PCz9vgSmffefUkCkHDnx7KR1PtBjQOXFKMJhzQ2IARZ2X5UJvrMClTM1oZo2Ax1VgRnYjX_b6I7Tw0PP6Jvr2OxOnPm4MTRP7H-dX9-_kgdIJUhEwoAbJhc4xFUseF1WtZHRg_JJs1JzDFZ5MXeO5QpMdf_edH0gpmUiGleMfxB9F96R3QPnPgZE91Cmhx0aMP1sz1eW5dXuq0EWDYknoRaqGdyh3J16LeT1nz5tQc2"/>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface">Sanctuary BP Pro V2</h3>
+<p class="text-xs text-on-surface-variant">SKU: CS-EQ-042 • Clinical Grade Sensor</p>
+</div>
+</div>
+<div class="col-span-2">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-xs font-semibold">Equipment</span>
+</div>
+<div class="col-span-2 flex items-center gap-2">
+<div class="w-24 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[15%] rounded-full"></div>
+</div>
+<span class="text-xs font-bold text-tertiary">12 Units</span>
+</div>
+<div class="col-span-1 font-bold text-on-surface">$129.99</div>
+<div class="col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary-fixed hover:text-on-primary-fixed rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-error-container hover:text-on-error-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Product Row 3 -->
+<div class="grid grid-cols-12 gap-4 items-center bg-surface-container-lowest p-4 px-8 rounded-lg shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] hover:shadow-[0_8px_30px_-4px_rgba(25,28,29,0.08)] transition-shadow group">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl overflow-hidden flex-shrink-0">
+<img alt="Medical Nitrile Gloves" class="w-full h-full object-cover" data-alt="stack of light blue medical nitrile gloves on a sterile glass shelf with soft focus laboratory equipment background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTHRQMQL9ILRU09QJ_u4yFLtlJih0W3AGh4oLXdNJDqeYiVuhRCgiH1btnTyJ1wHVOBsxo4pMMjXS5pAwW_81ojSQ1sTtXpc5fcVQW5jPHcquFCuyYs2wPmatEw3Ond7sxZ7KXD8CCawuWoEs827oTznYMRFHS9nm7QhppGoLtzK8oSv5GWGo4qfV2eqMoetljzzUEcLlWYpQunMG-qrp5-mNgH7fVYV6YtJRLgZxy5o1094pMEdelRFXYcgdmIx83m9zaK9Itgr86"/>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface">SafeTouch Nitrile (Blue)</h3>
+<p class="text-xs text-on-surface-variant">SKU: CS-HYG-109 • Box of 100 • Powder-Free</p>
+</div>
+</div>
+<div class="col-span-2">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-xs font-semibold">Hygiene</span>
+</div>
+<div class="col-span-2 flex items-center gap-2">
+<div class="w-24 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[55%] rounded-full"></div>
+</div>
+<span class="text-xs font-medium">1,200 Units</span>
+</div>
+<div class="col-span-1 font-bold text-on-surface">$18.50</div>
+<div class="col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary-fixed hover:text-on-primary-fixed rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-error-container hover:text-on-error-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Product Row 4 (Out of Stock Example) -->
+<div class="grid grid-cols-12 gap-4 items-center bg-surface-container-low opacity-80 p-4 px-8 rounded-lg shadow-none border border-dashed border-outline-variant/30 group">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-14 h-14 bg-surface-container-highest rounded-xl overflow-hidden flex-shrink-0 grayscale">
+<img alt="Vitamin C Serum" class="w-full h-full object-cover" data-alt="professional clinical packaging of vitamin c serum bottle with amber glass and dropper on light grey background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuVNY4CftvwdNsW1-t2Y0f0YXiLEUOlYr_cY492hICJxpHNUBuG1bkm9dourrMpw9JgY0jHXq_2koIo_YUK-3lEXp5pgnwah2JZvk1QAQ2-Dre1KEZbOSoCYsr4cbye6ApxxBCyokwnAsnx2PNPIGwZW9J5vxo159Ys3tPa_XvuMUrQfMNuVrsKXe0MzluaF1w0XMIkNJIWleSWslUnEsFWWYj9azJNtjzx15zTK6dl7y3YoMWHnGdpGfNzzX9j5MeCWmijKQANcyN"/>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface italic">Luminary Vit-C Complex</h3>
+<p class="text-xs text-on-surface-variant">SKU: CS-NUT-088 • Topical Formulation</p>
+</div>
+</div>
+<div class="col-span-2">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-xs font-semibold">Nutrition</span>
+</div>
+<div class="col-span-2 flex items-center gap-2">
+<span class="px-2 py-0.5 bg-error-container text-on-error-container rounded text-[10px] font-bold uppercase tracking-tighter">Backordered</span>
+<span class="text-xs font-bold text-error">0 Units</span>
+</div>
+<div class="col-span-1 font-bold text-on-surface">$62.00</div>
+<div class="col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary-fixed hover:text-on-primary-fixed rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-error-container hover:text-on-error-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex justify-center items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="w-10 h-10 rounded-full bg-primary text-white font-bold text-sm">1</button>
+<button class="w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors text-sm font-medium">2</button>
+<button class="w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors text-sm font-medium">3</button>
+<span class="mx-2 text-on-surface-variant">...</span>
+<button class="w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors text-sm font-medium">12</button>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<!-- Quick Summary Cards (Bento Style) -->
+<div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-primary-container p-6 rounded-lg relative overflow-hidden group">
+<div class="relative z-10">
+<span class="text-xs font-bold uppercase tracking-widest text-on-primary-container/60 block mb-1">Top Selling</span>
+<h4 class="text-xl font-headline font-extrabold text-on-primary-container">Pure-Flow Omega 3</h4>
+<p class="text-sm text-on-primary-container/80 mt-2">184 units moved this week.</p>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl text-on-primary-container opacity-5 group-hover:scale-110 transition-transform duration-500" data-icon="trending_up">trending_up</span>
+</div>
+<div class="bg-surface-container-highest p-6 rounded-lg border border-outline-variant/20">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Active Alerts</span>
+<div class="flex items-center gap-4 mt-2">
+<div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</div>
+<div>
+<h4 class="text-lg font-headline font-bold text-on-surface">8 Products Low</h4>
+<button class="text-xs font-bold text-primary hover:underline">Review Stock</button>
+</div>
+</div>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-100 flex flex-col justify-between">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-1">Total Valuation</span>
+<h4 class="text-2xl font-headline font-extrabold text-blue-900">$48,290.45</h4>
+</div>
+<div class="flex items-center gap-2 mt-4 text-xs font-bold text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_upward">arrow_upward</span>
+<span>4.2% from last month</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Success Feedback (Toast Placeholder) -->
+<div class="fixed bottom-8 right-8 z-[60] flex items-center gap-4 bg-inverse-surface text-inverse-on-surface px-6 py-4 rounded-xl shadow-2xl translate-y-[200%] transition-transform duration-500">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="check_circle">check_circle</span>
+<span class="font-medium text-sm">Product updated successfully</span>
+<button class="ml-4 text-xs font-bold uppercase tracking-wider opacity-60 hover:opacity-100">Dismiss</button>
+</div>
+</body></html>
